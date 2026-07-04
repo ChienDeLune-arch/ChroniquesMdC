@@ -94,22 +94,24 @@ export default async function BlogPage({ searchParams }: Props) {
         </div>
       )}
 
-      {gridPosts && gridPosts.length > 0 ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {(gridPosts as Post[]).map(post => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-20 text-muted">
-          <p className="text-lg">Aucun article pour le moment.</p>
-          {(tag || q) && (
-            <a href="/public/blog" className="text-sm text-[rgb(var(--color-accent))] underline mt-2 inline-block">
-              Voir tous les articles
-            </a>
-          )}
-        </div>
-      )}
+      {gridPosts && gridPosts.length > 0 && (
+		  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+			{(gridPosts as Post[]).map(post => (
+			  <PostCard key={post.id} post={post} />
+			))}
+		  </div>
+		)}
+
+		{!featured && (!gridPosts || gridPosts.length === 0) && (
+		  <div className="text-center py-20 text-muted">
+			<p className="text-lg">Aucun article pour le moment.</p>
+			{(tag || q) && (
+			  <a href="/public/blog" className="text-sm text-[rgb(var(--color-accent))] underline mt-2 inline-block">
+				Voir tous les articles
+			  </a>
+			)}
+		  </div>
+		)}
 
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-2 mt-12">
