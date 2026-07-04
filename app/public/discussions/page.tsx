@@ -41,7 +41,7 @@ export default async function DiscussionsPage({ searchParams }: Props) {
     .select(`
       id, title, slug, excerpt, type,
       published_at, updated_at, views, allow_comments,
-      author:profiles!posts_author_id_fkey(username, display_name, avatar_url),
+      author:profiles!posts_author_id_fkey(id, username, display_name, avatar_url),
       post_tags(tag:tags(id, name, slug, color)),
       post_authors(profile:profiles(id, username, display_name, avatar_url))
     `, { count: 'exact' })

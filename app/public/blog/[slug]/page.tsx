@@ -52,7 +52,7 @@ export default async function BlogPostPage({ params }: Props) {
     .from('posts')
     .select(`
       *,
-      author:profiles!posts_author_id_fkey(username, display_name, avatar_url),
+      author:profiles!posts_author_id_fkey(id, username, display_name, avatar_url, bio, website),
       post_tags(tag:tags(*)),
       post_authors(profile:profiles(id, username, display_name, avatar_url))
     `)
