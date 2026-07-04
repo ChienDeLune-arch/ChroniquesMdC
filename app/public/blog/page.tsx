@@ -25,6 +25,11 @@ export default async function BlogPage({ searchParams }: Props) {
   const offset  = (page - 1) * PER_PAGE
   const supabase = await createClient()
 
+	const { data, error } = await supabase
+  .from('posts')
+  .select('id, title, status, visibility')
+
+console.log('ALL posts:', JSON.stringify(data))
   // Tags disponibles
   const { data: tags } = await supabase
     .from('tags')
