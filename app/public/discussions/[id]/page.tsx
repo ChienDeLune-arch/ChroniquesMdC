@@ -37,7 +37,7 @@ export default async function DiscussionDetailPage({ params }: Props) {
     .from('posts')
     .select(`
       *,
-      author:profiles(id, username, display_name, avatar_url, bio),
+      author:profiles!posts_author_id_fkey(username, display_name, avatar_url),
       post_tags(tag:tags(*)),
       post_authors(
         role,

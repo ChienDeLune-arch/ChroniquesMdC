@@ -52,7 +52,7 @@ export default async function BlogPostPage({ params }: Props) {
     .from('posts')
     .select(`
       *,
-      author:profiles(id, username, display_name, avatar_url, bio, website),
+      author:profiles!posts_author_id_fkey(username, display_name, avatar_url),
       post_tags(tag:tags(*)),
       post_authors(profile:profiles(id, username, display_name, avatar_url))
     `)
@@ -108,7 +108,7 @@ export default async function BlogPostPage({ params }: Props) {
   if (tagIds.length) {
     const { data } = await supabase
       .from('posts')
-      .select('id, title, slug, excerpt, cover_image, type, published_at, reading_time, author:profiles(username, display_name, avatar_url), post_tags(tag:tags(id, name, slug, color))')
+      .select('id, title, slug, excerpt, cover_image, type, published_at, reading_time, author:profiles!posts_author_id_fkey(username, display_name, avatar_url), post_tags(tag:tags(id, name, slug, color))')
       .eq('status', 'published')
       .eq('visibility', 'public')
       .neq('id', post.id)
