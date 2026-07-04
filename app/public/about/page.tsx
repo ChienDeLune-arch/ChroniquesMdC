@@ -83,7 +83,7 @@ export default function AboutPage() {
           Une question, une idée de collaboration, ou juste envie d'échanger ?
         </p>
         <div className="flex flex-wrap gap-3">
-          <a href="mailto:toi@exemple.fr"
+          <a href="mailto:jhevodigital@gmail.com"
             className="btn-secondary btn-sm">
             <Mail size={15} />
             toi@exemple.fr
