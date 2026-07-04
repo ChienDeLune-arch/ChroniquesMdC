@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import { formatDate, getProgressPct, formatPrice } from '@/lib/utils'
 import { ArrowRight, FileText, MessageSquare, Target, Files, BarChart3, Sparkles } from 'lucide-react'
 import type { Post, Project } from '@/lib/types'
