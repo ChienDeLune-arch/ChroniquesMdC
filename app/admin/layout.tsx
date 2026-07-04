@@ -1,11 +1,12 @@
 import { redirect } from 'next/navigation'
 import { requireAdmin } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { LayoutDashboard, Users, FileText, Files, BarChart3, Settings, ChevronRight } from 'lucide-react'
+import { LayoutDashboard, Users, FileText, Files, BarChart3, Settings, ChevronRight, Tag } from 'lucide-react'
 
 const ADMIN_NAV = [
   { href: '/admin',          icon: LayoutDashboard, label: 'Dashboard'    },
   { href: '/admin/users',    icon: Users,            label: 'Utilisateurs' },
+  { href: '/admin/tags',     icon: Tag,            label: 'tags'         },
   { href: '/admin/content',  icon: FileText,         label: 'Contenu'      },
   { href: '/admin/files',    icon: Files,            label: 'Fichiers'     },
   { href: '/admin/analytics',icon: BarChart3,        label: 'Analytics'    },
