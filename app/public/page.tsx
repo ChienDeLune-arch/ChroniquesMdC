@@ -14,7 +14,7 @@ const { data:featuredPosts, error } = await supabase
   .from('posts')
   .select('id, title, status, visibility')
 
-console.log('ALL posts:', JSON.stringify(data))
+console.log('ALL posts:', JSON.stringify(featuredPosts))
 console.log('Error:', JSON.stringify(error))
 
   const { data: activeProjects } = await supabase
