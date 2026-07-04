@@ -5,7 +5,7 @@ import { formatDate, getProgressPct, formatPrice } from '@/lib/utils'
 import { ArrowRight, FileText, MessageSquare, Target, Files, BarChart3, Sparkles } from 'lucide-react'
 import type { Post, Project } from '@/lib/types'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
   const supabase = await createClient()
