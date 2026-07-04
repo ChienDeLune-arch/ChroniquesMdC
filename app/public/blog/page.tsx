@@ -25,19 +25,6 @@ export default async function BlogPage({ searchParams }: Props) {
   const offset  = (page - 1) * PER_PAGE
   const supabase = await createClient()
 
-	const { data, error } = await supabase
-  .from('posts')
-    .select(`
-	  id, title, slug, excerpt, cover_image, type,
-	  published_at, reading_time, is_featured, views,
-	  author:profiles!posts_author_id_fkey(username, display_name, avatar_url),
-	  post_tags!post_tags_post_id_fkey(tag:tags!post_tags_tag_id_fkey(id, name, slug, color))
-	`, { count: 'exact' })
-    .eq('status', 'published')
-    .eq('visibility', 'public')
-    .order('published_at', { ascending: false })
-
-console.log('ALL posts:', JSON.stringify(data))
   // Tags disponibles
   const { data: tags } = await supabase
     .from('tags')
