@@ -3,6 +3,8 @@ import { ContentTable } from '@/components/admin/ContentTable'
 
 interface Props { searchParams: Promise<{ type?: string; status?: string }> }
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminContentPage({ searchParams }: Props) {
   const { type = 'posts', status = 'all' } = await searchParams
   const supabase = createAdminClient()

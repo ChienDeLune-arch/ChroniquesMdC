@@ -19,6 +19,8 @@ const PRESET_COLORS = [
   '#F97316', '#84CC16',
 ]
 
+export const dynamic = 'force-dynamic'
+
 export default function AdminTagsPage() {
   const supabase = createClient()
   const [tags,    setTags]    = useState<Tag[]>([])

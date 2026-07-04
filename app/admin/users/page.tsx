@@ -3,6 +3,8 @@ import { UsersTable } from '@/components/admin/UsersTable'
 
 interface Props { searchParams: Promise<{ q?: string; role?: string; page?: string }> }
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminUsersPage({ searchParams }: Props) {
   const { q, role, page: pageParam } = await searchParams
   const page    = Math.max(1, parseInt(pageParam ?? '1'))
