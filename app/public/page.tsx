@@ -12,7 +12,7 @@ export default async function HomePage() {
 
   const { data: featuredPosts } = await supabase
     .from('posts')
-    .select('id, title, slug, excerpt, cover_image, type, published_at, reading_time, author:profiles(username, display_name, avatar_url)')
+    .select('id, title, slug, excerpt, cover_image, type, published_at, reading_time, author:profiles!posts_author_id_fkey(username, display_name, avatar_url)')
     .eq('status', 'published').eq('visibility', 'public')
     .order('published_at', { ascending: false }).limit(3)
 
