@@ -104,16 +104,14 @@ export default async function HomePage() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-5">
-          {(featuredPosts as Post[] | null)?.map(post => (
-            <PostCard key={post.id} post={post} />
-          ))}
-          {!featuredPosts?.length && (
-            <div className="col-span-3 text-center py-16 text-[rgb(var(--color-muted))]">
-              <FileText size={32} className="mx-auto mb-3 opacity-30" />
-              <p>Aucun article publié pour le moment.</p>
-            </div>
-          )}
-        </div>
+  {(featuredPosts as any[])?.map(post => (
+    <div key={post.id} className="surface-card p-4">
+      <p>{post.title}</p>
+      <p>{post.slug}</p>
+    </div>
+  ))}
+  {!featuredPosts?.length && <p>Aucun article</p>}
+</div>
       </section>
 
       {!!activeProjects?.length && (
