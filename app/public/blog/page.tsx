@@ -43,7 +43,14 @@ export default async function BlogPage({ searchParams }: Props) {
     .eq('status', 'published')
     .eq('visibility', 'public')
     .order('published_at', { ascending: false })
+	const { data: featuredPosts, error } = await supabase
+  .from('posts')
+  .select('id, title, slug, excerpt, cover_image, type, published_at, reading_time, author:profiles(username, display_name, avatar_url)')
+  .eq('status', 'published').eq('visibility', 'public')
+  .order('published_at', { ascending: false }).limit(3)
 
+console.log('Posts:', JSON.stringify(featuredPosts))
+console.log('Error:', JSON.stringify(error))
   if (tag) {
     // Filtrer par tag via sous-requête
     const { data: tagRow } = await supabase
