@@ -4,6 +4,7 @@ import { TagFilter } from '@/components/blog/TagFilter'
 import { PostCard } from '@/components/blog/PostCard'
 import { Rss } from 'lucide-react'
 import type { Post, Tag } from '@/lib/types'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -15,6 +16,8 @@ interface Props {
 }
 
 const PER_PAGE = 9
+
+export const dynamic = 'force-dynamic'
 
 export default async function BlogPage({ searchParams }: Props) {
   const { tag, q, page: pageParam } = await searchParams
@@ -91,7 +94,9 @@ export default async function BlogPage({ searchParams }: Props) {
       </div>
 
       {/* Filtre par tag */}
-      <TagFilter tags={(tags as Tag[] | null) ?? []} activeSlug={tag} />
+      <Suspense fallback={null}>
+		  <TagFilter tags={(tags as Tag[] | null) ?? []} activeSlug={tag} />
+		</Suspense>
 
       {/* Post à la une */}
       {featured && (
