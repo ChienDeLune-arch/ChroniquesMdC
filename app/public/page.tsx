@@ -1,6 +1,5 @@
-import { Suspense } from 'react'
 import Link from 'next/link'
-import { createAdminClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { formatDate, getProgressPct, formatPrice } from '@/lib/utils'
 import { ArrowRight, FileText, MessageSquare, Target, Files, BarChart3, Sparkles } from 'lucide-react'
 import type { Post, Project } from '@/lib/types'
@@ -8,14 +7,15 @@ import type { Post, Project } from '@/lib/types'
 export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
-const supabase = createAdminClient()
+  const supabase = await createClient()
 
-const { data:featuredPosts, error } = await supabase
-  .from('posts')
-  .select('id, title, status, visibility')
-
-console.log('ALL posts:', JSON.stringify(featuredPosts))
-console.log('Error:', JSON.stringify(error))
+  const { data: featuredPosts } = await supabase
+    .from('posts')
+    .select('id, title, slug, excerpt, cover_image, type, published_at, reading_time, author:profiles!posts_author_id_fkey(username, display_name, avatar_url)')
+    .eq('status', 'published')
+    .eq('visibility', 'public')
+    .order('published_at', { ascending: false })
+    .limit(3)
 
   const { data: activeProjects } = await supabase
     .from('projects')
@@ -25,22 +25,16 @@ console.log('Error:', JSON.stringify(error))
 
   return (
     <main>
-
-      {/* ---- HERO ---- */}
       <section className="relative hero-gradient min-h-[85vh] flex flex-col items-center justify-center px-4 py-24 text-center overflow-hidden">
-        {/* Grille décorative */}
         <div className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage: 'linear-gradient(rgb(var(--color-primary)) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--color-primary)) 1px, transparent 1px)',
             backgroundSize: '48px 48px'
           }} />
-
-        {/* Orbe lumineux */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgb(var(--color-accent) / 0.12) 0%, transparent 70%)' }} />
 
         <div className="relative z-10 max-w-4xl mx-auto">
-          {/* Pill label */}
           <div className="inline-flex items-center gap-2 mb-8">
             <span className="inline-label"
               style={{ background: 'rgb(var(--color-accent) / 0.12)', color: 'rgb(var(--color-accent))', border: '1px solid rgb(var(--color-accent) / 0.2)' }}>
@@ -49,7 +43,6 @@ console.log('Error:', JSON.stringify(error))
             </span>
           </div>
 
-          {/* Titre principal */}
           <h1 className="text-5xl md:text-7xl font-bold text-[rgb(var(--color-primary))] mb-6 leading-[1.05]"
             style={{ fontFamily: 'var(--font-space)', letterSpacing: '-0.03em' }}>
             Un espace pour<br />
@@ -70,8 +63,7 @@ console.log('Error:', JSON.stringify(error))
 
           <div className="flex flex-wrap gap-3 justify-center">
             <Link href="/public/blog" className="btn-primary btn-lg">
-              Lire le blog
-              <ArrowRight size={18} />
+              Lire le blog <ArrowRight size={18} />
             </Link>
             <Link href="/auth/register"
               className="btn-lg border border-[rgb(var(--color-border))] text-[rgb(var(--color-primary))] hover:border-[rgb(var(--color-border-strong))] hover:bg-[rgb(var(--color-surface-1))] transition-all rounded-[var(--radius)] inline-flex items-center gap-2 px-6 font-medium text-base">
@@ -80,13 +72,11 @@ console.log('Error:', JSON.stringify(error))
           </div>
         </div>
 
-        {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30">
           <div className="w-px h-12 bg-gradient-to-b from-transparent to-[rgb(var(--color-primary))]" />
         </div>
       </section>
 
-      {/* ---- SECTIONS RAPIDES ---- */}
       <section className="py-16 px-4 max-w-7xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
           {QUICK_LINKS.map(({ href, icon: Icon, label, color }) => (
@@ -101,7 +91,6 @@ console.log('Error:', JSON.stringify(error))
         </div>
       </section>
 
-      {/* ---- DERNIERS ARTICLES ---- */}
       <section className="py-12 px-4 max-w-7xl mx-auto">
         <div className="flex items-end justify-between mb-8">
           <div>
@@ -127,7 +116,6 @@ console.log('Error:', JSON.stringify(error))
         </div>
       </section>
 
-      {/* ---- PROJETS ---- */}
       {!!activeProjects?.length && (
         <section className="py-12 px-4 max-w-7xl mx-auto">
           <div className="flex items-end justify-between mb-8">
@@ -146,7 +134,6 @@ console.log('Error:', JSON.stringify(error))
         </section>
       )}
 
-      {/* ---- CTA MEMBRES ---- */}
       <section className="py-16 px-4 max-w-4xl mx-auto">
         <div className="surface-card p-10 text-center relative overflow-hidden glow-accent">
           <div className="absolute inset-0 hero-gradient opacity-50" />
@@ -187,7 +174,8 @@ function PostCard({ post }: { post: Post }) {
         <span className="badge-accent mb-2.5 self-start">
           {post.type === 'discussion' ? 'Discussion' : 'Article'}
         </span>
-        <h3 className="font-semibold text-[rgb(var(--color-primary))] mb-2 line-clamp-2 group-hover:text-[rgb(var(--color-accent))] transition-colors" style={{ fontFamily: 'var(--font-space)' }}>
+        <h3 className="font-semibold text-[rgb(var(--color-primary))] mb-2 line-clamp-2 group-hover:text-[rgb(var(--color-accent))] transition-colors"
+          style={{ fontFamily: 'var(--font-space)' }}>
           {post.title}
         </h3>
         {post.excerpt && (
@@ -217,7 +205,8 @@ function ProjectCard({ project }: { project: Project }) {
         }
       </div>
       <div className="p-5 flex-1 flex flex-col">
-        <h3 className="font-semibold text-[rgb(var(--color-primary))] mb-1 group-hover:text-[rgb(var(--color-accent))] transition-colors line-clamp-2" style={{ fontFamily: 'var(--font-space)' }}>
+        <h3 className="font-semibold text-[rgb(var(--color-primary))] mb-1 group-hover:text-[rgb(var(--color-accent))] transition-colors line-clamp-2"
+          style={{ fontFamily: 'var(--font-space)' }}>
           {project.title}
         </h3>
         {project.short_desc && (
