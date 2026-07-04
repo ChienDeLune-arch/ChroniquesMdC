@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'sonner'
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 
 const inter = Inter({
@@ -44,12 +44,6 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" suppressHydrationWarning className={`${inter.variable} ${spaceGrotesk.variable}`}>
-		// Dans le return, juste avant </body>
-		<ThemeProvider ...>
-		  {children}
-		  <Toaster ... />
-		  <SpeedInsights />   {/* ← ici */}
-		</ThemeProvider>
       <body className="min-h-screen bg-surface-0 text-primary antialiased">
         <ThemeProvider
           attribute="class"
@@ -72,6 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               },
             }}
           />
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>
