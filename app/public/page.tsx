@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic'
 export default async function HomePage() {
 const supabase = createAdminClient()
 
-const { data, error } = await supabase
+const { data:featuredPosts, error } = await supabase
   .from('posts')
   .select('id, title, status, visibility')
 
