@@ -10,13 +10,12 @@ export const dynamic = 'force-dynamic'
 export default async function HomePage() {
 const supabase = createAdminClient()
 
-const { data: featuredPosts, error } = await supabase
+const { data, error } = await supabase
   .from('posts')
-  .select('id, title, slug, excerpt, cover_image, type, published_at, reading_time, author:profiles!posts_author_id_fkey(username, display_name, avatar_url)')
-  .eq('status', 'published').eq('visibility', 'public')
-  .order('published_at', { ascending: false }).limit(3)
+  .select('id, title, status, visibility')
 
-console.log('Posts admin:', JSON.stringify(featuredPosts))
+console.log('ALL posts:', JSON.stringify(data))
+console.log('Error:', JSON.stringify(error))
 
   const { data: activeProjects } = await supabase
     .from('projects')
